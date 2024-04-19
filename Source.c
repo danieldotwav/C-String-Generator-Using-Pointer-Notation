@@ -6,7 +6,7 @@
 #define S2LENGTHMIN 2
 #define S2LENGTHMAX 20
 
-char* generateS1(char s1[S1LENGTH + 1]);
+char* generateS1();
 int generateS2(char s2[S2LENGTHMAX + 1]);
 char getReplacementCharacter();
 void strfilter(char s1[S1LENGTH + 1], char s2[S2LENGTHMAX + 1], char ch);
@@ -21,8 +21,7 @@ int main(void) {
 
     /* Generate a random pattern of uppercase letters only once */
     //char original[S1LENGTH + 1];
-    char* original = (char *)malloc(S1LENGTH * sizeof(char));
-    generateS1(original);
+    char* original = generateS1();
 
     while (selection == 'Y' || selection == 'y') {
         /* Reset invalidSelectionFlag */
@@ -96,21 +95,19 @@ char* generateS1() {
     char rand_char;
 
     /* Create a pointer to an array of characters */
-    char* s1
+    static char s1[S1LENGTH];
+    char* ptr = s1;
 
-    for (int i = 0; i < S1LENGTH; ++i) {
-        /* Generate random number between 1 and 26 */
-        rand_num = rand() % 26;
+        for (int i = 0; i < S1LENGTH; ++i) {
+            /* Generate random number between 1 and 26 */
+            rand_num = rand() % 26;
 
-        /* Shift the range to 65-90 and cast to char */
-        rand_char = (char)(rand_num + 65);
-
-        /* Store random letter in array of chars */
-        s1[i] = rand_char;
-    }
+            /* Shift the range to 65-90, cast to char, and increment pointer */
+            *ptr++ = (char)(rand_num + 65);
+        }
 
     /* Null-terminating string */
-    s1[S1LENGTH] = '\0';
+    *ptr = '\0';
 
     return s1;
 }
