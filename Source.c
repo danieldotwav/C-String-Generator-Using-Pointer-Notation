@@ -7,12 +7,12 @@
 #define S2LENGTHMAX 20
 
 char* generateS1();
-int generateS2(char s2[S2LENGTHMAX + 1]);
+char* generateS2();
 char getReplacementCharacter();
 void strfilter(char s1[S1LENGTH + 1], char s2[S2LENGTHMAX + 1], char ch);
 
 int isUpperCaseLetter(int iochar);
-void duplicateArray(char original[S1LENGTH + 1], char copy[S1LENGTH + 1]);
+char* createDuplicateArray(char* original);
 
 int main(void) {
     printf("Welcome User\n");
@@ -20,23 +20,21 @@ int main(void) {
     int invalidSelectionFlag;
 
     /* Generate a random pattern of uppercase letters only once */
-    //char original[S1LENGTH + 1];
     char* original = generateS1();
 
     while (selection == 'Y' || selection == 'y') {
         /* Reset invalidSelectionFlag */
         invalidSelectionFlag = 0;
 
-        /* Generate a copy of the randomly generated array, called s1 */
-        char s1[S1LENGTH + 1];
-        duplicateArray(original, s1);
+        /* Generate a pointer, that will be a copy of the randomly generated array, called s1 */
+        char* s1 = createDuplicateArray(original);
 
         /* Get user string of uppercase letters */
-        char s2[S2LENGTHMAX + 1];
+        char* s2;
 
         do {
-            generateS2(s2); /* Loop until we have a valid string */
-        } while (s2[0] == '\0');
+            s2 = generateS2(); /* Loop until we have a valid string */
+        } while (*s2 == '\0');
 
         /* Get replacement character from user */
         char ch;
@@ -92,10 +90,9 @@ int main(void) {
 
 char* generateS1() {
     int rand_num;
-    char rand_char;
 
     /* Create a pointer to an array of characters */
-    static char s1[S1LENGTH];
+    static char s1[S1LENGTH + 1];
     char* ptr = s1;
 
         for (int i = 0; i < S1LENGTH; ++i) {
@@ -112,7 +109,7 @@ char* generateS1() {
     return s1;
 }
 
-int generateS2(char s2[S2LENGTHMAX + 1]) {
+char* generateS2() {
     /* Get the user string */
     printf("\nEnter a string of uppercase letters 'A' - 'Z'\n");
     printf("Must contain between %d and %d characters: ", S2LENGTHMIN, S2LENGTHMAX);
@@ -121,6 +118,9 @@ int generateS2(char s2[S2LENGTHMAX + 1]) {
     int invalidCharacterDetected = 0; /* Flag to keep track of valid characters */
     int hasExceededCharacterLimit = 0; /* Flag to keep track of string length */
     char currentCharacter; /* Keep track of current character being processed */
+
+    static char s2[S2LENGTHMAX + 1]; /* Create a static array */
+    char* s2ptr = s2; /* Use a pointer to traverse the array */
 
     /* Process input while:
     /* 1. There are still characters in the input buffer,
@@ -137,7 +137,7 @@ int generateS2(char s2[S2LENGTHMAX + 1]) {
             if (!hasExceededCharacterLimit) {
                 /* Finally, we check for invalid character */
                 if (isUpperCaseLetter(currentCharacter)) {
-                    s2[numCharacters - 1] = currentCharacter;
+                    *s2ptr++ = currentCharacter;
                 }
                 else {
                     invalidCharacterDetected = 1;
@@ -215,6 +215,19 @@ void duplicateArray(char original[S1LENGTH + 1], char copy[S1LENGTH + 1]) {
     for (int i = 0; i < S1LENGTH + 1; ++i) {
         copy[i] = original[i];
     }
+}
+
+char* createDuplicateArray(char* original) {
+    static char duplicate[S1LENGTH + 1];
+    char* duplicatePtr = duplicate;
+
+    char* originalPtrCopy = original;
+
+    for (int i = 0; i < S1LENGTH; ++i) {
+        *duplicatePtr++ = *originalPtrCopy++;
+    }
+
+    return duplicate;
 }
 
 /* TEST CASES */
