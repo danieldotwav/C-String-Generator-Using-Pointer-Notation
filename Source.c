@@ -9,7 +9,7 @@
 char* generateS1();
 char* generateS2();
 char getReplacementCharacter();
-void strfilter(char s1[S1LENGTH + 1], char s2[S2LENGTHMAX + 1], char ch);
+void strfilter(char* s1, char* s2, char ch);
 
 int isUpperCaseLetter(int iochar);
 char* createDuplicateArray(char* original);
@@ -192,8 +192,27 @@ char getReplacementCharacter() {
     return iochar;
 }
 
-void strfilter(char s1[S1LENGTH + 1], char s2[S2LENGTHMAX + 1], char ch) {
+void strfilter(char* s1, char* s2, char ch) {
     char s2Character;
+
+    /* We need pointers to traverse s1 and s2 while preserving the original pointers */
+    char* s1ptr = s1;
+    char* s2ptr = s2;
+
+    while (*s2ptr != '\0') {
+        s2Character = *s2ptr;
+
+        /* Search through all 40 randomly generated letters */
+        while (*s1ptr != '\0') {
+            if (*s1ptr == s2Character) {
+                *s1ptr = ch;
+            }
+
+            *s1ptr++; /* Get the next character in s1 */
+        }
+
+        *s2ptr++; /* Get the next character in s2 */
+    }
 
     /* We need to iterate through each character in s2 and search s1 for that character */
     for (int i = 0; s2[i] != '\0'; ++i) {
