@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS /* disable security warnings in Microsoft Visual Studio*/
+#define _CRT_SECURE_NO_WARNINGS /* disable security warnings in Microsoft Visual Studio */
 #include <stdio.h>
 #include <stdlib.h>
 
