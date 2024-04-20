@@ -160,11 +160,13 @@ char* generateS2() {
 
     /* If any of the error flags were raised, set the first index of the array to the null terminating character */
     if (invalidCharacterDetected || hasExceededCharacterLimit || isLessThanRequiredLength) {
-        s2[0] = '\0';
+        *s2 = '\0';
     }
     else {
-        s2[numCharacters] = '\0';
+        *s2ptr = '\0';
     }
+
+    return s2;
 }
 
 /* Prompts the user to enter a single character. Returns null termianting character upon failure. */
@@ -210,13 +212,7 @@ int isUpperCaseLetter(int iochar) {
     return (iochar >= 'A' && iochar <= 'Z');
 }
 
-/* Copies values from s1 into s2 */
-void duplicateArray(char original[S1LENGTH + 1], char copy[S1LENGTH + 1]) {
-    for (int i = 0; i < S1LENGTH + 1; ++i) {
-        copy[i] = original[i];
-    }
-}
-
+/* Returns a pointer to an array of characters identical to the parameter */
 char* createDuplicateArray(char* original) {
     static char duplicate[S1LENGTH + 1];
     char* duplicatePtr = duplicate;
