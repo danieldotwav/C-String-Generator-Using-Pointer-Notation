@@ -193,37 +193,17 @@ char getReplacementCharacter() {
 }
 
 void strfilter(char* s1, char* s2, char ch) {
-    char s2Character;
+    char* originalS1 = s1;  /* Store the original pointer to reset later */
 
-    /* We need pointers to traverse s1 and s2 while preserving the original pointers */
-    char* s1ptr = s1;
-    char* s2ptr = s2;
-
-    while (*s2ptr != '\0') {
-        s2Character = *s2ptr;
-
-        /* Search through all 40 randomly generated letters */
-        while (*s1ptr != '\0') {
-            if (*s1ptr == s2Character) {
-                *s1ptr = ch;
+    while (*s2 != '\0') {
+        s1 = originalS1;  /* Reset s1 pointer for each character in s2 */
+        while (*s1 != '\0') {
+            if (*s1 == *s2) {
+                *s1 = ch;
             }
-
-            *s1ptr++; /* Get the next character in s1 */
+            s1++;
         }
-
-        *s2ptr++; /* Get the next character in s2 */
-    }
-
-    /* We need to iterate through each character in s2 and search s1 for that character */
-    for (int i = 0; s2[i] != '\0'; ++i) {
-        s2Character = s2[i];
-
-        /* Search through all 40 randomly generated letters */
-        for (int j = 0; s1[j] != '\0'; ++j) {
-            if (s1[j] == s2Character) {
-                s1[j] = ch;
-            }
-        }
+        s2++;
     }
 }
 
@@ -236,12 +216,11 @@ char* createDuplicateArray(char* original) {
     static char duplicate[S1LENGTH + 1];
     char* duplicatePtr = duplicate;
 
-    char* originalPtrCopy = original;
-
     for (int i = 0; i < S1LENGTH; ++i) {
-        *duplicatePtr++ = *originalPtrCopy++;
+        *duplicatePtr++ = *original++;
     }
 
+    *duplicatePtr = '\0'; /* Null-terminate the duplicate array to indicate end of string */
     return duplicate;
 }
 
